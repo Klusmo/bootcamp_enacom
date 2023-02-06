@@ -40,28 +40,40 @@ def solve_knapsack_milp(
             selected.append(item)
     return selected
 
+def guard_clauses(cost, value):
+    """Guard clauses"""
+    if len(cost) != len(value):
+        raise ValueError("cost and value must have the same length")
 
 def main():
     """Main function"""
 
     capacity = 1000
     # normal case
-    cost = [470, 400, 170, 270, 340, 230, 50, 440]
+    # cost = [470, 400, 170, 270, 340, 230, 50, 440]
 
     # case with 1 and 5 items must be selected
     # cost = [70, 400, 170, 270, 40, 230, 50, 440]
 
     # case with 4 is selected and 2 is not selected
-    # cost = [470, 800, 170, 270, 340, 230, 50, 440]
+    cost = [470, 800, 170, 270, 340, 230, 50, 440]
+
+    # case with 2 is selected and 4 is not selected
+    cost = [470, 40, 170, 500, 340, 230, 50, 440]
     value = [410, 330, 140, 250, 320, 320, 90, 190]
+
 
     items = [
         ValuableItem(f"opcao {i+1}", v, w) for i, (v, w) in enumerate(zip(cost, value))
     ]
     selected = solve_knapsack_milp(capacity, items, verbose=True)
 
+    print("\n\n" + "-" * 80)
+    print("Problema da Mochila")
     print(f"Investimentos disponíveis: {len(items)}")
     print(f"Capital disponível: {capacity}")
+    print("\n\n")
+
     print(items_to_table(items), end="\n\n")
 
     print(f"Investimentos escolhidos: {len(selected)}")

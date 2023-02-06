@@ -60,12 +60,13 @@ class Knapsack(BuilderOptimizationProblem):
         ineq_cons.add(constraint2)
 
         # 2 and 4 are the indices + 1 of the variables that will be used in the constraint
-        # x2 and x4 must be selected together
-        # x2 = x4 ->> x2 - x4 = 0
-        coeficients = np.array([[0, 1, 0, -1, 0, 0, 0, 0]]).transpose()
+        # If x2 is selected x4 must be selected too
+        # x2<=M*x4 -> -x2+M*x4<=0
+        m = 1000 # Big M
+        coeficients = np.array([[0, 1, 0, -m, 0, 0, 0, 0]]).transpose()
         constants = 0
         constraint3 = LinearFunction(c=coeficients, d=constants)
-        eq_cons.add(constraint3)
+        ineq_cons.add(constraint3)
 
         return Constraint(ineq_cons=ineq_cons, eq_cons=eq_cons)
 
